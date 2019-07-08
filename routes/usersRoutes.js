@@ -1,10 +1,14 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const UsersCtrl = require('../controllers/users');
-const AuthHelpers = require('../helpers/authHelpers');
+const UsersCtrl = require("../controllers/users");
+const AuthHelpers = require("../helpers/authHelpers");
 
-router.get('/user/getAll', AuthHelpers.VerifyToken, UsersCtrl.GetAllUsers);
-router.post('/user/follow', AuthHelpers.VerifyToken, UsersCtrl.FollowUser);
+router.get("/user/getAll", AuthHelpers.VerifyToken, UsersCtrl.GetAllUsers);
+router.get("/user/:id", AuthHelpers.VerifyToken, UsersCtrl.GetUserById);
+router.get("/user/:username", AuthHelpers.VerifyToken, UsersCtrl.GetUserByName);
+
+router.post("/user/follow", AuthHelpers.VerifyToken, UsersCtrl.FollowUser);
+router.post("/user/unfollow", AuthHelpers.VerifyToken, UsersCtrl.UnFollowUser);
 
 module.exports = router;
