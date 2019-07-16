@@ -1,7 +1,5 @@
-const Joi = require("joi");
 const HttpStatus = require("http-status-codes");
 
-const Post = require("../models/postModel");
 const User = require("../models/userModel");
 
 module.exports = {

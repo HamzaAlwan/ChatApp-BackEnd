@@ -7,6 +7,7 @@ const userSchema = Schema({
 	birthday: { type: Date },
 	sex: { type: String },
 	country: { type: String },
+	username_lower: { type: String },
 	email: { type: String },
 	phoneNumber: { type: String },
 	password: { type: String },
@@ -29,6 +30,13 @@ const userSchema = Schema({
 			created: { type: Date, default: Date.now() },
 			read: { type: Boolean, default: false },
 			date: { type: String, default: "" }
+		}
+	],
+	chatList: [
+		{
+			// The person which is going to receive the messages
+			receiverId: { type: Schema.Types.ObjectId, ref: "User" },
+			messageId: { type: Schema.Types.ObjectId, ref: "Message" }
 		}
 	]
 });
