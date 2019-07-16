@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const _ = require("lodash");
+const path = require("path");
 
 const secret = require("./config/secret");
 
@@ -13,6 +14,8 @@ const server = require("http").createServer(app);
 const io = require("socket.io").listen(server);
 
 const { User } = require("./helpers/userClass");
+
+app.use(express.static(path.resolve("dist")));
 
 // Routes
 const authRoutes = require("./routes/authRoutes");
@@ -45,6 +48,13 @@ app.use("/api/chatapp", postsRoutes);
 app.use("/api/chatapp", usersRoutes);
 app.use("/api/chatapp", notificationsRoutes);
 app.use("/api/chatapp", messagesRoutes);
+
+app.get("/", (req, res) => {
+	res.sendFile(path.resolve("dist/index.html"));
+});
+app.get("*", (req, res) => {
+	res.sendFile(path.resolve("dist/index.html"));
+});
 
 // Listening to the port
 server.listen(process.env.PORT || 5500, err => {
