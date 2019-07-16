@@ -38,6 +38,13 @@ app.use(bodyParser.json({ limit: "50mb" }));
 mongoose.Promise = global.Promise;
 mongoose.connect(secret.MongoUrl, { useNewUrlParser: true });
 
+app.get("/", (req, res) => {
+	res.sendFile(path.resolve("dist/index.html"));
+});
+app.get("*", (req, res) => {
+	res.sendFile(path.resolve("dist/index.html"));
+});
+
 require("./socket/streams")(io);
 require("./socket/private")(io, User, _);
 
@@ -48,13 +55,6 @@ app.use("/api/chatapp", postsRoutes);
 app.use("/api/chatapp", usersRoutes);
 app.use("/api/chatapp", notificationsRoutes);
 app.use("/api/chatapp", messagesRoutes);
-
-app.get("/", (req, res) => {
-	res.sendFile(path.resolve("dist/index.html"));
-});
-app.get("*", (req, res) => {
-	res.sendFile(path.resolve("dist/index.html"));
-});
 
 // Listening to the port
 server.listen(process.env.PORT || 5500, err => {
