@@ -41,9 +41,6 @@ mongoose.connect(secret.MongoUrl, { useNewUrlParser: true });
 app.get("/", (req, res) => {
 	res.sendFile(path.resolve("dist/index.html"));
 });
-app.get("*", (req, res) => {
-	res.sendFile(path.resolve("dist/index.html"));
-});
 
 require("./socket/streams")(io);
 require("./socket/private")(io, User, _);
