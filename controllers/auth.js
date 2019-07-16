@@ -9,6 +9,10 @@ const config = require("../config/secret");
 
 module.exports = {
 	async CreateUser(req, res) {
+		// Convert the email lowercase
+		req.body["email"] = Helpers.lowerCase(req.body.email);
+		// Save a lowercase version of the username;
+		req.body["username_lower"] = Helpers.lowerCase(req.body.username);
 		const schema = Joi.object().keys({
 			fullname: Joi.string()
 				.min(5)
@@ -48,9 +52,6 @@ module.exports = {
 				.status(HttpStatus.CONFLICT)
 				.json({ message: "Email already exists" });
 		}
-
-		// Save a lowercase version of the username;
-		req.body["username_lower"] = Helpers.lowerCase(req.body.username);
 
 		const userName = await User.findOne({
 			username_lower: Helpers.lowerCase(req.body.username)
