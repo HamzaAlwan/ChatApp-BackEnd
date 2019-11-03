@@ -9,7 +9,7 @@ const userSchema = Schema({
 	country: { type: String },
 	username_lower: { type: String },
 	email: { type: String },
-	phoneNumber: { type: String },
+	phone_number: { type: String },
 	password: { type: String },
 	posts: [
 		{
@@ -38,7 +38,11 @@ const userSchema = Schema({
 			receiverId: { type: Schema.Types.ObjectId, ref: "User" },
 			messageId: { type: Schema.Types.ObjectId, ref: "Message" }
 		}
-	]
+	],
+	image: {
+		id: { type: String, default: "user_lzhgun.svg" },
+		version: { type: String, default: "1569674029" }
+	}
 });
 
 module.exports = mongoose.model("User", userSchema);

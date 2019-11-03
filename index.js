@@ -15,8 +15,6 @@ const io = require("socket.io").listen(server);
 
 const { User } = require("./helpers/userClass");
 
-app.use(express.static(path.resolve("dist")));
-
 // Routes
 const authRoutes = require("./routes/authRoutes");
 const postsRoutes = require("./routes/postsRoutes");
@@ -38,9 +36,11 @@ app.use(bodyParser.json({ limit: "50mb" }));
 mongoose.Promise = global.Promise;
 mongoose.connect(secret.MongoUrl, { useNewUrlParser: true });
 
-app.get("/", (req, res) => {
-	res.sendFile(path.resolve("dist/index.html"));
-});
+// Uncommit on deployment
+// app.use(express.static(path.resolve("dist")));
+// app.get("/", (req, res) => {
+// 	res.sendFile(path.resolve("dist/index.html"));
+// });
 
 require("./socket/streams")(io);
 require("./socket/private")(io, User, _);

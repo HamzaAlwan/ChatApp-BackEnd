@@ -26,6 +26,7 @@ module.exports = {
 			.populate("followers.follower")
 			.populate("chatList.receiverId")
 			.populate("chatList.messageId")
+			.populate("notifications.followerId")
 			.then(user => {
 				res.status(HttpStatus.OK).json({ message: "User by id", user });
 			})
@@ -42,6 +43,7 @@ module.exports = {
 			.populate("followers.follower")
 			.populate("chatList.receiverId")
 			.populate("chatList.messageId")
+			.populate("notifications.followerId")
 			.then(user => {
 				res.status(HttpStatus.OK).json({ message: "User by username", user });
 			})

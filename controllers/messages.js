@@ -111,7 +111,7 @@ module.exports = {
 				// If there is no previous conversation between the users.
 				else {
 					const newConversation = new Conversation();
-					newConversation.participants.push({
+					await newConversation.participants.push({
 						senderId,
 						receiverId
 					});
@@ -123,7 +123,7 @@ module.exports = {
 					newMessage.sender = req.user.username;
 					newMessage.receiver = receiverName;
 
-					newMessage.message.push({
+					await newMessage.message.push({
 						senderId,
 						senderName: req.user.username,
 						receiverId,
@@ -163,7 +163,9 @@ module.exports = {
 					await newMessage
 						.save()
 						.then(() => {
-							res.status(HttpStatus.OK).json({ message: "Message sent." });
+							return res
+								.status(HttpStatus.OK)
+								.json({ message: "Message sent." });
 						})
 						.catch(err => {
 							return res
