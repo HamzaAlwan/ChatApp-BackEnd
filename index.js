@@ -34,7 +34,10 @@ app.use(
 app.use(bodyParser.json({ limit: "50mb" }));
 
 mongoose.Promise = global.Promise;
-mongoose.connect(secret.MongoUrl, { useNewUrlParser: true });
+mongoose.connect(secret.MongoUrl, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true
+});
 
 // Uncommit on deployment
 // app.use(express.static(path.resolve("dist")));
