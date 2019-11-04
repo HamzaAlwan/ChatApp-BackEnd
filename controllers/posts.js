@@ -1,4 +1,4 @@
-const Joi = require("joi");
+const Joi = require("@hapi/joi");
 const HttpStatus = require("http-status-codes");
 const cloudinary = require("cloudinary").v2;
 
