@@ -15,7 +15,11 @@ const userSchema = Schema({
 		{
 			postId: { type: Schema.Types.ObjectId, ref: "Post" },
 			post: { type: String },
-			created: { type: Date, default: Date.now() }
+			created: { type: Date, default: Date.now() },
+			image: {
+				id: { type: String, default: undefined },
+				version: { type: String, default: undefined }
+			}
 		}
 	],
 	// Array of the people that are followed by the current user

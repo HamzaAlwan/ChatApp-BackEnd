@@ -1,13 +1,22 @@
 const Joi = require("joi");
 const HttpStatus = require("http-status-codes");
+const cloudinary = require("cloudinary").v2;
 
 const Post = require("../models/postModel");
 const User = require("../models/userModel");
+const secret = require("../config/secret").cloudinary;
+
+cloudinary.config({
+	cloud_name: secret.cloudName,
+	api_key: secret.api_key,
+	api_secret: secret.api_secret
+});
 
 module.exports = {
-	CreatePost(req, res) {
+	async CreatePost(req, res) {
 		const schema = Joi.object().keys({
-			post: Joi.string().required()
+			post: Joi.string().required(),
+			image: Joi.string().empty("")
 		});
 		const { error } = Joi.validate(req.body, schema);
 		if (error && error.details) {
@@ -19,10 +28,27 @@ module.exports = {
 			user: req.user._id,
 			username: req.user.username,
 			post: req.body.post,
-			created: new Date()
+			created: new Date(),
+			image: { id: "", version: "" }
 		};
 
-		Post.create(body)
+		if (req.body.image.length > 5) {
+			await cloudinary.uploader.upload(
+				req.body.image,
+				async (error, result) => {
+					if (error) {
+						return res
+							.status(HttpStatus.INTERNAL_SERVER_ERROR)
+							.json({ message: error });
+					}
+
+					body.image.id = `${result.public_id}.${result.format}`;
+					body.image.version = result.version;
+				}
+			);
+		}
+
+		await Post.create(body)
 			.then(async post => {
 				await User.updateOne(
 					{ _id: req.user._id },
@@ -30,7 +56,8 @@ module.exports = {
 						$push: {
 							posts: {
 								postId: post._id,
-								post: req.body.post,
+								post: body.post,
+								image: body.image,
 								created: new Date()
 							}
 						}

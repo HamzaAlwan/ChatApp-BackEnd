@@ -136,7 +136,7 @@ module.exports = {
 			});
 	},
 
-	async UpdateUser(req, res) {
+	async UpdateProfile(req, res) {
 		const schema = Joi.object().keys({
 			fullname: Joi.string()
 				.min(5)
@@ -192,26 +192,26 @@ module.exports = {
 		}
 
 		if (image.length > 5) {
-			await cloudinary.uploader
-				.upload(image, async (error, result) => {
-					if (error) throw error;
-					await User.updateOne(
-						{ _id: req.body.userId },
-						{
-							$set: {
-								"image.id": `${result.public_id}.${result.format}`,
-								"image.version": result.version
-							}
+			await cloudinary.uploader.upload(image, async (error, result) => {
+				if (error) {
+					return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+						message: error
+					});
+				}
+				await User.updateOne(
+					{ _id: req.body.userId },
+					{
+						$set: {
+							"image.id": `${result.public_id}.${result.format}`,
+							"image.version": result.version
 						}
-					)
-						.then(() => {})
-						.catch(err => {
-							throw err;
-						});
-				})
-				.catch(err => {
-					throw err;
+					}
+				).catch(err => {
+					return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+						message: err
+					});
 				});
+			});
 		}
 
 		await User.updateOne({ _id: req.body.userId }, { $set: req.body })
@@ -227,7 +227,7 @@ module.exports = {
 				});
 			});
 	},
-	async UpdateProfile(req, res) {
+	async UpdatePassword(req, res) {
 		const schema = Joi.object().keys({
 			old_password: Joi.string()
 				.min(8)
@@ -283,7 +283,7 @@ module.exports = {
 									});
 									res.cookie("auth", token);
 									res.status(HttpStatus.CREATED).json({
-										message: "User created successfully",
+										message: "Password updated successfully",
 										user,
 										token
 									});
