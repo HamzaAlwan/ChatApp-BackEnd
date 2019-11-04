@@ -18,8 +18,8 @@ module.exports = {
 			post: Joi.string().required(),
 			image: Joi.string().empty("")
 		});
-		const { error } = Joi.validate(req.body, schema);
-		if (error && error.details) {
+		const { error } = schema.validate(req.body);
+		if (error) {
 			return res
 				.status(HttpStatus.BAD_REQUEST)
 				.json({ messageJoi: error.details });

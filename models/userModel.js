@@ -44,8 +44,8 @@ const userSchema = Schema({
 		}
 	],
 	image: {
-		id: { type: String, default: "user_lzhgun.svg" },
-		version: { type: String, default: "1569674029" }
+		id: { type: String, default: "user_lzhgun.png" },
+		version: { type: String, default: "1569717478" }
 	}
 });
 

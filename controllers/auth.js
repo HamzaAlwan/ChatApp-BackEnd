@@ -35,12 +35,10 @@ module.exports = {
 				.min(8)
 				.required()
 		});
-		const { error } = Joi.validate(req.body, schema);
+		const { error } = schema.validate(req.body);
 
-		if (error && error.details) {
-			return res
-				.status(HttpStatus.BAD_REQUEST)
-				.json({ messageJoi: error.details });
+		if (error) {
+			return res.status(HttpStatus.BAD_REQUEST).json({ messageJoi: error });
 		}
 
 		// Convert the email lowercase
@@ -155,9 +153,9 @@ module.exports = {
 			image: Joi.string().empty(""),
 			userId: Joi.string().required()
 		});
-		const { error } = Joi.validate(req.body, schema);
+		const { error } = schema.validate(req.body);
 
-		if (error && error.details) {
+		if (error) {
 			return res
 				.status(HttpStatus.BAD_REQUEST)
 				.json({ messageJoi: error.details });
@@ -241,9 +239,9 @@ module.exports = {
 			userId: Joi.string().required()
 		});
 
-		const { error } = Joi.validate(req.body, schema);
+		const { error } = schema.validate(req.body);
 
-		if (error && error.details) {
+		if (error) {
 			return res
 				.status(HttpStatus.BAD_REQUEST)
 				.json({ messageJoi: error.details });
